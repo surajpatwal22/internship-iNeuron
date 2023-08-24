@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { FaSearch, FaMapMarkerAlt } from 'react-icons/fa';
 import './weather.css'
 
 const Weather = () => {
@@ -6,13 +7,6 @@ const Weather = () => {
     const [City,setCity] = useState("dehradun");
     const [error , setError] = useState(null);
     // const Apikey = "8bebb3b8a6bd448d90a52501231908";
-    
-    
-    useEffect(() => {
-        if (City) {
-            fetchWeatherData();
-        }    
-    }, [City])
 
     const fetchWeatherData = async () =>{
         setError(null);
@@ -34,6 +28,24 @@ const Weather = () => {
 
             })
     }
+
+    useEffect(() => {
+        let timerOut = setTimeout(() => {
+          fetchWeatherData();
+         }, 1000);   
+  
+         return ()=>{
+            clearTimeout(timerOut)}
+      }, [City])
+
+
+    const handleInput = (e)=>{
+        const newValue = e.target.value;
+         setCity(newValue);
+    }
+    const handleSearch = ()=>{
+        fetchWeatherData(City);
+    };
     // const {condition, temp_c, wind_kph , humidity ,uv ,last_updated} = weatherdata.current;
     // const {name , region , country , localtime} = weatherdata.location;
 
@@ -42,10 +54,12 @@ const Weather = () => {
     return (
         <div className='main-container'>
             <div className='input-sxn'>
-                <input className='input-feild' type="text" placeholder='enter city name' defaultValue={City}  onClick={(e)=>{
-                    setCity(e.target.value)    
-                }} />
-                <button className='search-btn' onClick={fetchWeatherData}>Search</button>
+                <input className='input-feild' type="text" placeholder='enter city name' defaultValue={City} 
+                //  onClick={(e)=>{setCity(e.target.value)    
+                // }} 
+                onChange={handleInput}
+                />
+                <button className='search-btn' onClick={handleSearch}><FaSearch></FaSearch></button>
             </div>
            <div className='second-sxn'>
            <div className='iconsection display-box '>
