@@ -8,7 +8,6 @@ const Weather = () => {
     const [weatherdata, setWeatherData] = useState(null);
     const [City, setCity] = useState("dehradun");
     const [error, setError] = useState(null);
-    // const Apikey = "8bebb3b8a6bd448d90a52501231908";
 
     const fetchWeatherData = async () => {
         setError(null);
@@ -30,7 +29,6 @@ const Weather = () => {
 
             })
     }
-
     useEffect(() => {
         let timerOut = setTimeout(() => {
             fetchWeatherData();
@@ -62,8 +60,17 @@ const Weather = () => {
                     // }} 
                     onChange={handleInput}
                 />
-                <button className='search-btn' onClick={handleSearch}> <FaSearch /></button>
-                <button className='search-btn' onClick={handleSearch}><FaMapMarkerAlt /></button>
+                <div className='input-icon-section'>
+                    <button className='search-btn' onClick={handleSearch}> <FaSearch /></button>
+                    <button className='search-btn' onClick={handleSearch}><FaMapMarkerAlt /></button>
+                </div>
+                {/* humidity rain wind section */}
+                <div className='rain-wind-section'>
+                    <p className=' hd1'> <WiHumidity /> Humidity: {current?.humidity}%</p>
+                    <p className=' hd2'> <WiRain /> Rain: {current?.temp_c}%</p>
+                    <p className=' hd3'> <WiStrongWind /> Wind: {current?.wind_kph}Km/h</p>
+
+                </div>
             </div>
             <div className='second-sxn'>
                 <div className='iconsection '>
@@ -80,56 +87,63 @@ const Weather = () => {
                 </div>
             </div>
             <div className='details-sxn'>
-                <button className='search-btn' > <BsFillSunriseFill /></button>
-                <p>SunRise: <span>{forecast?.forecastday[0]?.astro?.sunrise}</span></p>
-                <p className='space-tag'>|</p>
+                <div className='details-item'>
+                    <button className='search-btn' > <BsFillSunriseFill /></button>
+                    <p>SunRise: <span>{forecast?.forecastday[0]?.astro?.sunrise}</span></p>
+                    <p className='space-tag'>|</p>
+                </div>
 
-                <button className='search-btn' > <BsFillSunsetFill /></button>
-                <p>SunSet: <span>{forecast?.forecastday[0]?.astro?.sunset}</span></p>
-                <p className='space-tag'>|</p>
+                <div className='details-item'>
+                    <button className='search-btn' > <BsFillSunsetFill /></button>
+                    <p>SunSet: <span>{forecast?.forecastday[0]?.astro?.sunset}</span></p>
+                    <p className='space-tag'>|</p>
+                </div>
 
-                <button className='search-btn' > <WiMoonrise /></button>
-                <p>MoonRise: <span>{forecast?.forecastday[0]?.astro?.moonrise}</span></p>
-                <p className='space-tag'>|</p>
+                <div className='details-item'>
+                    <button className='search-btn' > <WiMoonrise /></button>
+                    <p>MoonRise: <span>{forecast?.forecastday[0]?.astro?.moonrise}</span></p>
+                    <p className='space-tag'>|</p>
+                </div>
 
-                <button className='search-btn' > <WiMoonset /></button>
-                <p>MoonSet: <span>{forecast?.forecastday[0]?.astro?.moonset}</span></p>
-                <p className='space-tag'>|</p>
+                <div className='details-item'>
+                    <button className='search-btn' > <WiMoonset /></button>
+                    <p>MoonSet: <span>{forecast?.forecastday[0]?.astro?.moonset}</span></p>
+                    <p className='space-tag'>|</p>
+                </div>
 
-                <button className='search-btn' > <WiDirectionUp /></button>
-                <p>High: <span>{forecast?.forecastday[0]?.day?.maxtemp_c}°</span></p>
-                <p className='space-tag'>|</p>
+                <div className='details-item'>
+                    <button className='search-btn' > <WiDirectionUp /></button>
+                    <p>High: <span>{forecast?.forecastday[0]?.day?.maxtemp_c}°</span></p>
+                    <p className='space-tag'>|</p>
+                </div>
 
-                <button className='search-btn' > <WiThermometerExterior /></button>
-                <p>Avg: <span>{forecast?.forecastday[0]?.day?.avgtemp_c}°</span></p>
-                <p className='space-tag'>|</p>
+                <div className='details-item'>
+                    <button className='search-btn' > <WiThermometerExterior /></button>
+                    <p>Avg: <span>{forecast?.forecastday[0]?.day?.avgtemp_c}°</span></p>
+                    <p className='space-tag'>|</p>
 
-                <button className='search-btn' > <WiDirectionDown /></button>
-                <p>Low: <span>{forecast?.forecastday[0]?.day?.mintemp_c}°</span></p>
+                </div>
+                <div className='details-item'>
+                    <button className='search-btn' > <WiDirectionDown /></button>
+                    <p>Low: <span>{forecast?.forecastday[0]?.day?.mintemp_c}°</span></p>
+                </div>
+
 
 
             </div>
 
             <div className='third-sxn'>
                 {/* hourlyforcastsection */}
-                <div className='forecast-section' >
-                    {forecast?.forecastday[0]?.hour?.map((hour)=>{
-                        <div>
-                            <p>{hour?.time}</p> <br />
-                            <img src={forecast?.forecastday?.hour?.condition?.icon} alt="" />
-                            <p>{forecast?.forecastday?.hour?.temp_c}</p>
+                <div className='hourly-forecast'>
+                    {forecast?.forecastday[0]?.hour.map((hour) => (
+                        <div className='hourly-item' key={hour.time}>
+                            <p>{hour.time}</p>
+                            <img src={hour.condition.icon} alt={hour.condition.text} />
+                            <p>{hour.temp_c}°C</p>
                         </div>
-                    })}
-
-
+                    ))}
                 </div>
-                {/* humidity rain wind section */}
-                <div>
-                    <p className=' hd1'> <WiHumidity /> Humidity: {current?.humidity}%</p>
-                    <p className=' hd2'> <WiRain /> Rain: {current?.temp_c}%</p>
-                    <p className=' hd3'> <WiStrongWind /> Wind: {current?.wind_kph}Km/h</p>
 
-                </div>
             </div>
 
         </div>
